@@ -14,7 +14,7 @@ namespace MVC5Demo.Models
         [DisplayName("姓名")]
         public string Name { get; set; }
         [Required(ErrorMessage = "請輸入年紀")]
-        [Range(18, 99, ErrorMessage = "年紀限制18~99")]
+        [Range(18, 99, ErrorMessage = "年紀限制{1}~{2}")]
         [DisplayName("年紀")]
         public int Age { get; set; }
     }

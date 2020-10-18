@@ -30,6 +30,7 @@ namespace MVC5Demo.Controllers
         }
 
         [HttpPost]
+        [ValidateAntiForgeryToken]
         public ActionResult Create(Person person)
         {
             person.Id = data.OrderByDescending(o => o.Id).Select(s => s.Id).FirstOrDefault() + 1;
@@ -49,6 +50,7 @@ namespace MVC5Demo.Controllers
         }
 
         [HttpPost]
+        [ValidateAntiForgeryToken]
         public ActionResult Edit(int id, Person person)
         {
             if (ModelState.IsValid)
@@ -76,6 +78,7 @@ namespace MVC5Demo.Controllers
         }
 
         [HttpPost]
+        [ValidateAntiForgeryToken]
         public ActionResult Delete(int id, FormCollection form)
         {
             data.Remove(data.FirstOrDefault(e => e.Id == id));
