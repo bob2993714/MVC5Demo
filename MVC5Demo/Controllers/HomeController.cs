@@ -26,5 +26,12 @@ namespace MVC5Demo.Controllers
 
             return View();
         }
+
+        public ActionResult TEST()
+        {
+            ViewBag.Message = "Your TEST page.";
+
+            return View();
+        }
     }
 }
