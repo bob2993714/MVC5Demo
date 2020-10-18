@@ -32,6 +32,7 @@ namespace MVC5Demo.Controllers
         [HttpPost]
         public ActionResult Create(Person person)
         {
+            person.Id = data.OrderByDescending(o => o.Id).Select(s => s.Id).FirstOrDefault() + 1;
             if (ModelState.IsValid)
             {
                 data.Add(person);
@@ -60,6 +61,26 @@ namespace MVC5Demo.Controllers
             }
 
             return View(person);
+        }
+
+        public ActionResult Details(int id)
+        {
+
+            return View(data.FirstOrDefault(p => p.Id == id));
+        }
+
+        public ActionResult Delete(int id)
+        {
+
+            return View(data.FirstOrDefault(p => p.Id == id));
+        }
+
+        [HttpPost]
+        public ActionResult Delete(int id, FormCollection form)
+        {
+            data.Remove(data.FirstOrDefault(e => e.Id == id));
+
+            return RedirectToAction("Index");
         }
     }
 }
