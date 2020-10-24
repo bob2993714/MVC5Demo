@@ -7,6 +7,7 @@ using System.Net;
 using System.Web;
 using System.Web.Mvc;
 using MVC5Demo.Models;
+using Omu.ValueInjecter;
 
 namespace MVC5Demo.Controllers
 {
@@ -48,12 +49,17 @@ namespace MVC5Demo.Controllers
         // 如需詳細資料，請參閱 https://go.microsoft.com/fwlink/?LinkId=317598。
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create([Bind(Include = "CourseID,Title,Credits,DepartmentID")] Course course)
+        public ActionResult Create(CoursesEdit course)
         {
             if (ModelState.IsValid)
             {
-                db.Course.Add(course);
+                Course item = new Course();
+
+                item.InjectFrom(course);
+
+                db.Course.Add(item);
                 db.SaveChanges();
+
                 return RedirectToAction("Index");
             }
 
@@ -82,12 +88,16 @@ namespace MVC5Demo.Controllers
         // 如需詳細資料，請參閱 https://go.microsoft.com/fwlink/?LinkId=317598。
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit([Bind(Include = "CourseID,Title,Credits,DepartmentID")] Course course)
+        public ActionResult Edit(int id, CoursesEdit course)
         {
             if (ModelState.IsValid)
             {
-                db.Entry(course).State = EntityState.Modified;
+                var item = db.Course.Find(id);
+
+                item.InjectFrom(course);
+
                 db.SaveChanges();
+
                 return RedirectToAction("Index");
             }
             ViewBag.DepartmentID = new SelectList(db.Department, "DepartmentID", "Name", course.DepartmentID);

@@ -27,11 +27,15 @@ namespace MVC5Demo.Controllers
         }
 
         [HttpPost]
-        public ActionResult Create(Department department)
+        public ActionResult Create(DepartmentEdit department)
         {
             if (ModelState.IsValid)
             {
-                db.Department.Add(department);
+                Department item = new Department();
+
+                item.InjectFrom(department);
+
+                db.Department.Add(item);
                 db.SaveChanges();
 
                 return RedirectToAction("Index");
