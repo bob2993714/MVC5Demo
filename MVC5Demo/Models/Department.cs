@@ -23,6 +23,7 @@ namespace MVC5Demo.Models
     
         public int DepartmentID { get; set; }
         public string Name { get; set; }
+        [DisplayFormat(DataFormatString = "{0:#.##}", ApplyFormatInEditMode = true)]
         public decimal Budget { get; set; }
         [DataType(DataType.Date)]
         [DisplayFormat(DataFormatString = "{0:yyyy-MM-dd}", ApplyFormatInEditMode = true)]

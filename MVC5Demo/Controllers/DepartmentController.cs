@@ -2,8 +2,10 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net;
 using System.Web;
 using System.Web.Mvc;
+using Omu.ValueInjecter;
 
 namespace MVC5Demo.Controllers
 {
@@ -42,9 +44,9 @@ namespace MVC5Demo.Controllers
 
         public ActionResult Edit(int? id)
         {
-            if( !id.HasValue)
+            if (id == null)
             {
-                return HttpNotFound();
+                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
             var item = db.Department.Find(id);
             if( item == null )
@@ -58,15 +60,13 @@ namespace MVC5Demo.Controllers
         }
 
         [HttpPost]
-        public ActionResult Edit(int id, Department department)
+        public ActionResult Edit(int id, DepartmentEdit department)
         {
             if (ModelState.IsValid)
             {
                 var item = db.Department.Find(id);
-                item.Name = department.Name;
-                item.Budget = department.Budget;
-                item.StartDate = department.StartDate;
-                item.InstructorID = department.InstructorID;
+
+                item.InjectFrom(department);
 
                 db.SaveChanges();
 
@@ -82,9 +82,9 @@ namespace MVC5Demo.Controllers
 
         public ActionResult Details(int? id)
         {
-            if (!id.HasValue)
+            if (id == null)
             {
-                return HttpNotFound();
+                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
             var item = db.Department.Find(id.Value);
             if (item == null)
@@ -97,9 +97,9 @@ namespace MVC5Demo.Controllers
 
         public ActionResult Delete(int? id)
         {
-            if (!id.HasValue)
+            if (id == null)
             {
-                return HttpNotFound();
+                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
             var item = db.Department.Find(id.Value);
             if (item == null)
